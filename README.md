@@ -9,3 +9,7 @@ Write email for confirming plus point. +1
 
 Daniel Barath
 majti89@gmail.com
+
+Lab 2:
+- Double buffering.
+- (Evan) GDC conference => Lecture, video Youtube..

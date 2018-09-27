@@ -1,0 +1,4 @@
+﻿  main.cpp
+c:\users\aaogmu\computer_graphics\01\02_sdlevents\02_sdlevents\main.cpp(151): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\aaogmu\computer_graphics\01\02_sdlevents\02_sdlevents\main.cpp(152): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  02_SDLEvents.vcxproj -> C:\Users\aaogmu\computer_graphics\01\02_SDLEvents\Debug\02_SDLEvents.exe
