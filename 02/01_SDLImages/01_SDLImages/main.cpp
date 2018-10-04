@@ -81,12 +81,12 @@ int main( int argc, char* args[] )
 	SDL_Event ev;
 	// the X and Y coordinates of the mouse
 	Sint32 mouseX = 0, mouseY = 0;
-
-	int image_x = 0;
-	int image_y = 0;
-
-	int dir_x = 1;
-	int dir_y = 1;
+	int idx, idy;
+	idx = idy = 0;
+	int pos_x, pos_y, vel_x, vel_y;
+	pos_x = pos_y = 0;
+	vel_x = vel_y = 1;
+	SDL_RendererFlip flip_flag = SDL_FLIP_NONE;
 
 	while (!quit)
 	{
@@ -118,42 +118,76 @@ int main( int argc, char* args[] )
 		SDL_RenderClear(ren);
 
 
-		SDL_Rect cursor_rect;
-		SDL_QueryTexture(tex, 0, 0, &cursor_rect.w, &cursor_rect.h);
+		SDL_Rect image_sized_rect;
+		image_sized_rect.x = 0;
+		image_sized_rect.y = 0;
+		SDL_QueryTexture(tex, 0, 0, &image_sized_rect.w, &image_sized_rect.h);
 
+		SDL_Rect src_rect, dst_rect;
+		int frame_index = (SDL_GetTicks() / 50) % 30;
+		
+		int body_w = image_sized_rect.w / 6;
+		int body_h = image_sized_rect.h / 5;
 
-		image_x = image_x + dir_x;
-		image_y = image_y + dir_y;
+		idx = frame_index % 6;
+		idy = frame_index / 6;
 
-		if (image_x < 0) {
-			image_x = 0;
-			dir_x = 1;
-		} else if (image_x + cursor_rect.w > 640) {
-			image_x = 640 - cursor_rect.w;
-			dir_x = -1;
+		/*idx = (idx + 1) % 6;
+		idy = (idy + 1) % 5;*/
+		std::cout << idx << ' ' << idy << '\n';
+		src_rect.x = idx * body_w;
+		src_rect.y = idy * body_h;
+		src_rect.w = body_w;
+		src_rect.h = body_h;
+
+		// Update pos
+		pos_x = pos_x + vel_x;
+		pos_y = pos_y + vel_y;
+
+		if (pos_y > 480 - body_h)
+		{
+			vel_y = -vel_y;
 		}
 
-		if (image_y < 0) {
-			image_y = 0;
-			dir_y = 1;
-		} else if (image_y + cursor_rect.h > 480) {
-			image_y = 480 - cursor_rect.h;
-			dir_y = -1;
+		if (pos_y < 0)
+		{
+			vel_y = -vel_y;
 		}
-		// draw the image centered at the mouse cursorcursor_rect.x = image_x; //mouseX - cursor_rect.w / 2;
-		cursor_rect.x = image_x;
-		cursor_rect.y = image_y; //mouseY - cursor_rect.h / 2;
 
-		SDL_Rect image_rect;
-		image_rect.x = 0;
-		image_rect.y = 0;
-		image_rect.w = cursor_rect.w / 6;
-		image_rect.h = cursor_rect.h / 5;
+		if (pos_x > 640 - body_w)
+		{
+			vel_x = -vel_x;
+			flip_flag = SDL_FLIP_HORIZONTAL;
+		}
 
-		SDL_RenderCopy( ren,				// which renderer to use
-						tex,				// which texture to draw
-						&image_rect,					// source rect (which part of the texture to draw)
-						&cursor_rect );		// target rect
+		if (pos_x < 0)
+		{
+			vel_x = -vel_x;
+			flip_flag = SDL_FLIP_NONE;
+		}
+		
+		dst_rect.x = pos_x;
+		dst_rect.y = pos_y;
+		dst_rect.w = src_rect.w;
+		dst_rect.h = src_rect.h;
+
+		SDL_Point body_center;
+		body_center.x = dst_rect.x + dst_rect.w >> 1;
+		body_center.y = dst_rect.y + dst_rect.h >> 1;
+
+		SDL_RenderCopyEx(ren, tex, &src_rect, &dst_rect, 0, &body_center, flip_flag);
+
+		//// draw the image centered at the mouse cursor
+		//SDL_Rect image_rect;
+		//image_rect.x = mouseX;
+		//image_rect.y = mouseY;
+		//image_rect.w = image_sized_rect.w;
+		//image_rect.h = image_sized_rect.h;
+
+		//SDL_RenderCopy( ren,				// which renderer to use
+		//				tex,				// which texture to draw
+		//				&image_sized_rect,	// source rect (which part of the texture to draw)
+		//				&image_rect);		// target rect
 
 		// display the contents of the backbuffer
 		SDL_RenderPresent(ren);
@@ -164,6 +198,7 @@ int main( int argc, char* args[] )
 	//
 	// 4. step: clean up
 	// 
+
 
 	SDL_DestroyTexture( tex );
 	SDL_DestroyRenderer( ren );
