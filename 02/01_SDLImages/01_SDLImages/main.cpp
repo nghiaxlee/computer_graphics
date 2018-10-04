@@ -99,8 +99,30 @@ int main( int argc, char* args[] )
 				quit = true;
 				break;
 			case SDL_KEYDOWN:
-				if ( ev.key.keysym.sym == SDLK_ESCAPE )
+				switch (ev.key.keysym.sym)
+				{
+				case SDLK_LEFT:
+					if (vel_x > 0)
+						vel_x = -vel_x;
+					flip_flag = SDL_FLIP_HORIZONTAL;
+					break;
+				case SDLK_RIGHT:
+					if (vel_x < 0)
+						vel_x = -vel_x;
+					flip_flag = SDL_FLIP_NONE;
+					break;
+				case SDLK_UP:
+					if (vel_y > 0)
+						vel_y = -vel_y;
+					break;
+				case SDLK_DOWN:
+					if (vel_y < 0)
+						vel_y = -vel_y;
+					break;
+				case SDLK_ESCAPE:
 					quit = true;
+					break;
+				}
 				break;
 			case SDL_MOUSEMOTION:
 				mouseX = ev.motion.x;
@@ -132,9 +154,7 @@ int main( int argc, char* args[] )
 		idx = frame_index % 6;
 		idy = frame_index / 6;
 
-		/*idx = (idx + 1) % 6;
-		idy = (idy + 1) % 5;*/
-		std::cout << idx << ' ' << idy << '\n';
+		//std::cout << idx << ' ' << idy << '\n';
 		src_rect.x = idx * body_w;
 		src_rect.y = idy * body_h;
 		src_rect.w = body_w;
@@ -144,23 +164,23 @@ int main( int argc, char* args[] )
 		pos_x = pos_x + vel_x;
 		pos_y = pos_y + vel_y;
 
-		if (pos_y > 480 - body_h)
+		if (pos_y > 480 - body_h && vel_y > 0)
 		{
 			vel_y = -vel_y;
 		}
 
-		if (pos_y < 0)
+		if (pos_y < 0 && vel_y < 0)
 		{
 			vel_y = -vel_y;
 		}
 
-		if (pos_x > 640 - body_w)
+		if (pos_x > 640 - body_w && vel_x > 0)
 		{
 			vel_x = -vel_x;
 			flip_flag = SDL_FLIP_HORIZONTAL;
 		}
 
-		if (pos_x < 0)
+		if (pos_x < 0 && vel_x < 0)
 		{
 			vel_x = -vel_x;
 			flip_flag = SDL_FLIP_NONE;
@@ -174,6 +194,8 @@ int main( int argc, char* args[] )
 		SDL_Point body_center;
 		body_center.x = dst_rect.x + dst_rect.w >> 1;
 		body_center.y = dst_rect.y + dst_rect.h >> 1;
+
+		//std::cout << vel_x << ' ' << vel_y << '\n';
 
 		SDL_RenderCopyEx(ren, tex, &src_rect, &dst_rect, 0, &body_center, flip_flag);
 
