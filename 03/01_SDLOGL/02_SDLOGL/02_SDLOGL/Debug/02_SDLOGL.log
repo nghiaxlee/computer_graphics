@@ -1,0 +1,5 @@
+﻿  main.cpp
+c:\users\aaogmu\computer_graphics\03\01_sdlogl\02_sdlogl\02_sdlogl\main.cpp(128): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\aaogmu\computer_graphics\03\01_sdlogl\02_sdlogl\02_sdlogl\main.cpp(129): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\aaogmu\computer_graphics\03\01_sdlogl\02_sdlogl\02_sdlogl\main.cpp(130): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  02_SDLOGL.vcxproj -> C:\Users\aaogmu\computer_graphics\03\01_SDLOGL\02_SDLOGL\Debug\02_SDLOGL.exe
