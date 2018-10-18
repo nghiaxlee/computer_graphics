@@ -30,8 +30,10 @@ public:
 	void MouseWheel(SDL_MouseWheelEvent&);
 	void Resize(int, int);
 protected:
-	GLuint m_vaoID; // vertex array object resource identifier
-	GLuint m_vboID; // vertex buffer object resource identifier
+	GLuint m_vaoID1; // vertex array object resource identifier
+	GLuint m_vboID1; // vertex buffer object resource identifier
+	GLuint m_vaoID2; // vertex array object resource identifier
+	GLuint m_vboID2; // vertex buffer object resource identifier
 
 	// structure which contains all the data that is stored in a single vertex
 	struct Vertex
