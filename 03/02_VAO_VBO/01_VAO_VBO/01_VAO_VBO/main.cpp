@@ -7,8 +7,13 @@
 
 #include <iostream>
 #include <sstream>
+#include <windows.h>
 
 #include "MyApp.h"
+
+//extern "C" {
+//	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+//}
 
 void exitProgram()
 {
