@@ -60,9 +60,9 @@ bool CMyApp::Init()
 		double x32 = 0;
 		double y32 = 0;
 
-		double r = angle1 / 2 / M_PI;
-		double g = angle2 / 2 / M_PI;
-		double b = 0;
+		double r = abs(sin(angle1));//angle1 / 2 / M_PI;
+		double g = abs(cos(angle1));//angle2 / 2 / M_PI;
+		double b = angle1 / 2 / M_PI;
 
 		vert1[3 * i + 2] = { glm::vec3(x11, y11, 0), glm::vec3(r, g, b) };
 		vert1[3 * i + 0] = { glm::vec3(x21, y21, 0), glm::vec3(r, g, b) };
@@ -74,27 +74,17 @@ bool CMyApp::Init()
 
 	// generate a VAO ID
 	glGenVertexArrays(1, &m_vaoID1);
-	glGenVertexArrays(1, &m_vaoID2);
 	// activate the generated VAO
 	glBindVertexArray(m_vaoID1);
-	glBindVertexArray(m_vaoID2);
 	
 	// generate a VBO ID
 	glGenBuffers(1, &m_vboID1); 
-	glGenBuffers(1, &m_vboID2); 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboID1); // activate the new VBO
 	// allocate the VBO (in the onboard GPU memory) and fill it with data from system RAM (vert[])
 	glBufferData( GL_ARRAY_BUFFER,	// which activated buffer object to allocate
 				  sizeof(vert1),		// how many bytes should be allocated
 				  vert1,				// copy data from system RAM from this memory address
-				  GL_STATIC_DRAW);	// usage flags
-	//glBindBuffer(GL_ARRAY_BUFFER, m_vboID2); // activate the new VBO
-	//// allocate the VBO (in the onboard GPU memory) and fill it with data from system RAM (vert[])
-	//glBufferData( GL_ARRAY_BUFFER,	// which activated buffer object to allocate
-	//			  sizeof(vert2),		// how many bytes should be allocated
-	//			  vert2,				// copy data from system RAM from this memory address
-	//			  GL_STATIC_DRAW);	// usage flags
-	
+				  GL_STATIC_DRAW);	// usage flags	
 
 	// register in the VAO that general attribute index 0 is activated and it contains 3 floats per vertex
 	glEnableVertexAttribArray(0); // enable channel 0 (position)
@@ -116,6 +106,45 @@ bool CMyApp::Init()
 		GL_FALSE,
 		sizeof(Vertex),
 		(void*)(sizeof(glm::vec3)) ); // stride = 3*sizeof(float) i.e. skip 3 floats at the beginning
+
+	glBindVertexArray(0); // deactivate the VAO
+	glBindBuffer(GL_ARRAY_BUFFER, 0); // deactiviate the VBO
+
+// Object 2
+	// generate a VAO ID
+	glGenVertexArrays(1, &m_vaoID2);
+	// activate the generated VAO
+	glBindVertexArray(m_vaoID2);
+
+	// generate a VBO ID
+	glGenBuffers(1, &m_vboID2);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vboID2); // activate the new VBO
+	// allocate the VBO (in the onboard GPU memory) and fill it with data from system RAM (vert[])
+	glBufferData(GL_ARRAY_BUFFER,	// which activated buffer object to allocate
+		sizeof(vert2),		// how many bytes should be allocated
+		vert2,				// copy data from system RAM from this memory address
+		GL_STATIC_DRAW);	// usage flags	
+
+	// register in the VAO that general attribute index 0 is activated and it contains 3 floats per vertex
+	glEnableVertexAttribArray(0); // enable channel 0 (position)
+	glVertexAttribPointer(
+		(GLuint)0,		// we set the descriptor (pointer) of channel 0`s attributes
+		3,				// it contains 3
+		GL_FLOAT,		// floats
+		GL_FALSE,		// not normalized
+		sizeof(Vertex),	// stride (0=tightly packed)
+		0				// first data at the beginning of the buffer
+	);
+
+	// register in the VAO that general attribute index 3 is activated and it contains 3 floats per vertex
+	glEnableVertexAttribArray(3); // enable channel 3 (color)
+	glVertexAttribPointer(
+		(GLuint)3,
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		sizeof(Vertex),
+		(void*)(sizeof(glm::vec3))); // stride = 3*sizeof(float) i.e. skip 3 floats at the beginning
 
 	glBindVertexArray(0); // deactivate the VAO
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // deactiviate the VBO
@@ -191,12 +220,22 @@ void CMyApp::Render()
 
 	// turn on the VAO
 	glBindVertexArray(m_vaoID1);
-	//glBindVertexArray(m_vaoID2);
 
 	// draw
 	glDrawArrays(	GL_TRIANGLES,	// primitive type
 					0,					// start index
 					detailness * 3);					// number of vertices
+
+	// VAO off
+	glBindVertexArray(0);
+
+	// turn on the VAO
+	glBindVertexArray(m_vaoID2);
+
+	// draw
+	glDrawArrays(GL_TRIANGLES,	// primitive type
+		0,					// start index
+		detailness * 3);					// number of vertices
 
 	// VAO off
 	glBindVertexArray(0);

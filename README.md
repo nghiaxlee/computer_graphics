@@ -5,7 +5,16 @@ vision.sztaki.hu/~danini
 1 exam 4hrs?
 
 Click on project name -> Properties -> VC++ Directories -> (Include + Lib) directories -> Debugging -> Env
+
+These lines will force VS use my NVIDIA VGA instead of Intel.
+```
+extern "C" {
+	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
+```
+
 Write email for confirming plus point. +1
+
 
 Daniel Barath
 majti89@gmail.com
