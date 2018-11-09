@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyApp.h" />
-    <ClInclude Include="T:\03\02_Shaders\02_Shaders\GLUtils.hpp" />
+    <ClInclude Include="T:\04\02_Shaders\02_Shaders\GLUtils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="myFrag.frag" />

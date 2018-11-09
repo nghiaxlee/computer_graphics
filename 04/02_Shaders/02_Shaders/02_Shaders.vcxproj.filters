@@ -30,7 +30,7 @@
     <ClInclude Include="MyApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="T:\03\02_Shaders\02_Shaders\GLUtils.hpp">
+    <ClInclude Include="T:\04\02_Shaders\02_Shaders\GLUtils.hpp">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

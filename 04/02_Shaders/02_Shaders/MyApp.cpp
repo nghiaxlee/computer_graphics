@@ -144,12 +144,12 @@ void CMyApp::Render()
 	glUseProgram( m_programID );
 
 	static auto loc = glGetUniformLocation(m_programID, "max_iter");
-	glUniform1i(loc, (SDL_GetTicks() / 100) % 100);
+	glUniform1i(loc, (SDL_GetTicks() / 500) % 500);
 
 	static auto center = glGetUniformLocation(m_programID, "center");
 	float angle = SDL_GetTicks() / 1000.0;
-	//glUniform2f(center, sin(angle), cos(angle));
-	glUniform2f(center, 0.5f, 0.5f);
+	glUniform2f(center, sin(angle), cos(angle));
+	//glUniform2f(center, 0.5f, 0.5f);
 
 	// VAO on
 	glBindVertexArray(m_vaoID);
