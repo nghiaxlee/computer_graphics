@@ -151,7 +151,11 @@ void CMyApp::Render()
 		glm::scale<float>( s_x, s_y, s_z )
 
 	*/
-	m_matWorld = glm::mat4(1.0f) * glm::scale<float>(glm::tvec3<float>(cos(((SDL_GetTicks() / 1000) % 60) / M_PI), cos(((SDL_GetTicks() / 1000) % 60) / M_PI) * 2, 1.0)) * glm::translate(glm::tvec3<float>(0.0, cos(SDL_GetTicks() / 1000.0), 0.0)) * glm::rotate<float>(SDL_GetTicks() / 1000.0, glm::tvec3<float>(1, 0, 0));
+	float tick = SDL_GetTicks() / 1000.0;
+	m_matWorld = glm::mat4(1.0f) 
+		* glm::scale<float>(glm::tvec3<float>(cos(((SDL_GetTicks() / 1000) % 60) / M_PI), cos(((SDL_GetTicks() / 1000) % 60) / M_PI) * 2, 1.0)) 
+		* glm::translate(glm::tvec3<float>(0.0, cos(tick), 0.0)) 
+		* glm::rotate<float>(tick, glm::tvec3<float>(1, 0, 0));
 
 	glUniformMatrix4fv( m_loc_world,// uniform's location
 						1,			// send 1 matrix
