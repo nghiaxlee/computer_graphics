@@ -15,6 +15,8 @@ CMyApp::~CMyApp(void)
 {
 }
 
+const int FACES = 1;
+
 bool CMyApp::Init()
 {
 	// blue-ish clear color
@@ -23,6 +25,7 @@ bool CMyApp::Init()
 	//glEnable(GL_CULL_FACE);		// enable back-face culling
 	glCullFace(GL_BACK);		// cull the back-faces: GL_BACK; cull front faces: GL_FRONT
 	glEnable(GL_DEPTH_TEST);	// enable depth test
+	glPolygonMode(GL_BACK, GL_LINE);
 
 	//
 	// geometry
@@ -129,7 +132,9 @@ void CMyApp::Clean()
 void CMyApp::Update()
 {
 	// view transform
-	m_matView = glm::lookAt(glm::vec3(0, 0, 5),		// eye position
+	auto angle = SDL_GetTicks() / 2000.0 * 2 * M_PI / 3;
+	auto eye = 5.0f * glm::vec3(cos(angle), 0, sin(angle));
+	m_matView = glm::lookAt(eye,		// eye position
 							glm::vec3( 0,  0,  0),		// look at point
 							glm::vec3( 0,  1,  0));		// vector pointing upwards
 }
@@ -156,6 +161,7 @@ void CMyApp::Render()
 		* glm::scale<float>(glm::tvec3<float>(cos(((SDL_GetTicks() / 1000) % 60) / M_PI), cos(((SDL_GetTicks() / 1000) % 60) / M_PI) * 2, 1.0)) 
 		* glm::translate(glm::tvec3<float>(0.0, cos(tick), 0.0)) 
 		* glm::rotate<float>(tick, glm::tvec3<float>(1, 0, 0));
+        m_matWorld = glm::mat4(1.0f); // Assign back the matrix I for Eritch's lab. Comment this line and the drawing cube part for Daniel's lab.
 
 	glUniformMatrix4fv( m_loc_world,// uniform's location
 						1,			// send 1 matrix
@@ -168,7 +174,48 @@ void CMyApp::Render()
 	glBindVertexArray(m_vaoID);
 
 	// draw
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	// The order of matrices is really really IMPORTANT.
+
+	glm::mat4x4 mat[5];
+	mat[0] = glm::mat4(1.0f);
+	auto angle = SDL_GetTicks() / 500.0;
+	mat[1] = glm::rotate<float>(angle, glm::vec3(0, 1, 0)) * glm::translate(glm::vec3(2, 0, 0)) * glm::scale(glm::vec3(0.5, 0.5, 0.5));
+	auto angle1 = SDL_GetTicks() / 200.0;
+	mat[2] = glm::rotate<float>(angle, glm::vec3(0, 1, 0)) * glm::rotate<float>(angle, glm::vec3(0, 0, 1)) * glm::translate(glm::vec3(2, 0, 0)) * glm::scale(glm::vec3(0.5, 0.5, 0.5));
+	mat[3] = glm::rotate<float>(angle, glm::vec3(1, 0, 0)) * glm::translate(glm::vec3(2, 0, 0)) * glm::scale(glm::vec3(0.5, 0.5, 0.5));
+	// mat[2] = glm::scale(glm::vec3(0.5, 0.5, 0.5)) * glm::translate(glm::vec3(2, 0, 0));
+
+	// CUBE:
+	
+	for (int i = 0; i < 3; ++i)
+	{
+		m_matWorld = mat[i] * glm::translate(glm::vec3(0, 0, 1));
+		glUniformMatrix4fv(m_loc_world, 1, GL_FALSE, &(m_matWorld[0][0]));
+		glDrawArrays(GL_TRIANGLES, 0, 6 * FACES);
+
+		m_matWorld = mat[i] * glm::translate(glm::vec3(0, 0, -1)) * glm::rotate<float>(M_PI, glm::vec3(0, 1, 0));
+		glUniformMatrix4fv(m_loc_world, 1, GL_FALSE, &(m_matWorld[0][0]));
+		glDrawArrays(GL_TRIANGLES, 0, 6 * FACES);
+
+		m_matWorld = mat[i] * glm::translate(glm::vec3(1, 0, 0)) * glm::rotate<float>(M_PI / 2, glm::vec3(0, 1, 0));
+		glUniformMatrix4fv(m_loc_world, 1, GL_FALSE, &(m_matWorld[0][0]));
+		glDrawArrays(GL_TRIANGLES, 0, 6 * FACES);
+
+		m_matWorld = mat[i] * glm::translate(glm::vec3(-1, 0, 0)) * glm::rotate<float>(M_PI / 2, glm::vec3(0, -1, 0));
+		glUniformMatrix4fv(m_loc_world, 1, GL_FALSE, &(m_matWorld[0][0]));
+		glDrawArrays(GL_TRIANGLES, 0, 6 * FACES);
+
+		m_matWorld = mat[i] * glm::translate(glm::vec3(0, 1, 0)) * glm::rotate<float>(M_PI / 2, glm::vec3(-1, 0, 0));
+		glUniformMatrix4fv(m_loc_world, 1, GL_FALSE, &(m_matWorld[0][0]));
+		glDrawArrays(GL_TRIANGLES, 0, 6 * FACES);
+
+		m_matWorld = mat[i] * glm::translate(glm::vec3(0, -1, 0)) * glm::rotate<float>(M_PI / 2, glm::vec3(1, 0, 0));
+		glUniformMatrix4fv(m_loc_world, 1, GL_FALSE, &(m_matWorld[0][0]));
+		glDrawArrays(GL_TRIANGLES, 0, 6 * FACES);
+
+	}
+	//
 
 	// VAO off
 	glBindVertexArray(0);
