@@ -8,6 +8,7 @@ Click on project name -> Properties -> VC++ Directories -> (Include + Lib) direc
 
 These lines will force VS use my NVIDIA VGA instead of Intel.
 ```
+#include <windows.h>
 extern "C" {
 	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 }

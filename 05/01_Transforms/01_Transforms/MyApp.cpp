@@ -129,10 +129,12 @@ void CMyApp::Clean()
 	glDeleteProgram( m_programID );
 }
 
+const float SPD = 1000.0;
+
 void CMyApp::Update()
 {
 	// view transform
-	auto angle = SDL_GetTicks() / 2000.0 * 2 * M_PI / 3;
+	auto angle = SDL_GetTicks() / SPD;
 	auto eye = 5.0f * glm::vec3(cos(angle), 0, sin(angle));
 	m_matView = glm::lookAt(eye,		// eye position
 							glm::vec3( 0,  0,  0),		// look at point
@@ -156,7 +158,7 @@ void CMyApp::Render()
 		glm::scale<float>( s_x, s_y, s_z )
 
 	*/
-	float tick = SDL_GetTicks() / 1000.0;
+	float tick = SDL_GetTicks() / SPD;
 	m_matWorld = glm::mat4(1.0f) 
 		* glm::scale<float>(glm::tvec3<float>(cos(((SDL_GetTicks() / 1000) % 60) / M_PI), cos(((SDL_GetTicks() / 1000) % 60) / M_PI) * 2, 1.0)) 
 		* glm::translate(glm::tvec3<float>(0.0, cos(tick), 0.0)) 
@@ -178,13 +180,27 @@ void CMyApp::Render()
 	// The order of matrices is really really IMPORTANT.
 
 	glm::mat4x4 mat[5];
+	auto angle = SDL_GetTicks() / SPD;
+	auto angle1 = SDL_GetTicks() / SPD * 10;
 	mat[0] = glm::mat4(1.0f);
-	auto angle = SDL_GetTicks() / 500.0;
-	mat[1] = glm::rotate<float>(angle, glm::vec3(0, 1, 0)) * glm::translate(glm::vec3(2, 0, 0)) * glm::scale(glm::vec3(0.5, 0.5, 0.5));
-	auto angle1 = SDL_GetTicks() / 200.0;
-	mat[2] = glm::rotate<float>(angle, glm::vec3(0, 1, 0)) * glm::rotate<float>(angle, glm::vec3(0, 0, 1)) * glm::translate(glm::vec3(2, 0, 0)) * glm::scale(glm::vec3(0.5, 0.5, 0.5));
-	mat[3] = glm::rotate<float>(angle, glm::vec3(1, 0, 0)) * glm::translate(glm::vec3(2, 0, 0)) * glm::scale(glm::vec3(0.5, 0.5, 0.5));
-	// mat[2] = glm::scale(glm::vec3(0.5, 0.5, 0.5)) * glm::translate(glm::vec3(2, 0, 0));
+	mat[1] = glm::mat4(1.0f) 
+		* glm::rotate<float>(angle, glm::vec3(0, 1, 0))
+		* glm::translate(glm::vec3(2, 0, 0)) 
+		* glm::scale(glm::vec3(0.5, 0.5, 0.5));
+	mat[2] = glm::mat4(1.0f)
+		* glm::rotate<float>(angle, glm::vec3(0, 1, 0)) 
+		* glm::translate(glm::vec3(2, 0, 0))
+		* glm::rotate<float>(angle1, glm::vec3(0, 1, 0))
+		* glm::translate(glm::vec3(1, 0, 0))
+		* glm::scale(glm::vec3(0.25, 0.25, 0.25));
+	/*mat[2] = glm::mat4(1.0f) 
+		* glm::rotate<float>(angle, glm::vec3(0, 0, 1)) 
+		* glm::translate(glm::vec3(2, 0, 0)) 
+		* glm::scale(glm::vec3(0.5, 0.5, 0.5));*/
+	mat[3] = glm::mat4(1.0f) 
+		* glm::rotate<float>(angle, glm::vec3(1, 0, 0))
+		* glm::translate(glm::vec3(2, 0, 0)) 
+		* glm::scale(glm::vec3(0.5, 0.5, 0.5));
 
 	// CUBE:
 	
