@@ -13,8 +13,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A09D888C-6E7E-4DEA-A19E-9EBCF289DDD1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>_02_LoadTexture</RootNamespace>
-    <ProjectName>02_LoadTexture</ProjectName>
+    <RootNamespace>_02_LoadMesh</RootNamespace>
+    <ProjectName>02_LoadMesh</ProjectName>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -85,11 +85,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh_OGL3.cpp" />
     <ClCompile Include="MyApp.cpp" />
+    <ClCompile Include="ObjParser_OGL3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLUtils.hpp" />
+    <ClInclude Include="Mesh_OGL3.h" />
     <ClInclude Include="MyApp.h" />
+    <ClInclude Include="ObjParser_OGL3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="myFrag.frag" />
