@@ -12,6 +12,7 @@ out vec4 fs_out_col;
 
 // scene attributes
 uniform vec4 La = vec4(0.1f, 0.1f, 0.1f, 1);
+// uniform vec4 La = vec4(0.5f, 0.5f, 0.5f, 1);
 uniform vec3 eye_pos = vec3(0, 15, 15);
 
 // light attributes

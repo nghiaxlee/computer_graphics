@@ -307,6 +307,7 @@ void CMyApp::DrawCircle()
 		m_program.SetUniform("worldIT", matWorldIT);
 		m_program.SetUniform("MVP", mvp);
 		m_program.SetUniform("eye_pos", m_camera.GetEye());
+		m_program.SetUniform("Kd", glm::vec4(1, 1, 1, 1));
 
 		m_program.SetTexture("texImage", 0, m_textureID);
 
@@ -332,6 +333,7 @@ void CMyApp::Render()
 		m_program.SetUniform( "worldIT", matWorldIT );
 		m_program.SetUniform( "MVP", mvp );
 		m_program.SetUniform( "eye_pos", m_camera.GetEye() );
+		m_program.SetUniform("Kd", glm::vec4(1, 0, 0, 1));
 
 		m_program.SetTexture("texImage", 0, m_textureID);
 
@@ -357,6 +359,7 @@ void CMyApp::Render()
 	m_program.SetUniform("eye_pos", m_camera.GetEye());
 
 	m_program.SetTexture("texImage", 0, m_textureID);
+	m_program.SetUniform("Kd", glm::vec4(0, 1, 0, 1));
 
 	// draw with VAO
 	m_vb_octa.On();
@@ -416,6 +419,7 @@ void CMyApp::Render()
 	m_program.SetUniform("worldIT", matWorldIT);
 	m_program.SetUniform("MVP", mvp);
 	m_program.SetUniform("eye_pos", m_camera.GetEye());
+	m_program.SetUniform("Kd", glm::vec4(0, 0, 1, 1));
 
 	m_program.SetTexture("texImage", 0, m_textureID);
 

@@ -30,3 +30,7 @@ Lab 4:
 
 ============================
 What is myFrag and myVert????????
+============================
+m_program.SetUniform("Kd", glm::vec4(1, 0, 0, 1));
+
+If you use the line above, remember that it will affect until you change it again.
