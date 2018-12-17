@@ -11,8 +11,7 @@ out vec4 fs_out_col;
 //
 
 // scene attributes
-//uniform vec4 La = vec4(0.1f, 0.1f, 0.1f, 1);
-uniform vec4 La = vec4(0.5f, 0.5f, 0.5f, 1);
+uniform vec4 La = vec4(0.1f, 0.1f, 0.1f, 1);
 uniform vec3 eye_pos = vec3(0, 15, 15);
 
 // light attributes
@@ -26,6 +25,8 @@ uniform vec4 Kd = vec4(0.75f, 0.25f, 0.125f, 1);
 uniform vec4 Ks = vec4(0, 1, 0, 1);
 uniform float specular_power = 16;
 uniform sampler2D texImage;
+
+uniform int index = 0;
 
 void main()
 {
@@ -55,5 +56,5 @@ void main()
 		specular = Ls*Ks*si;
 	}
 
-	fs_out_col = (ambient+diffuse+specular)*texture(texImage, vs_out_tex0.st);
+	fs_out_col = index*(ambient+diffuse+specular)*texture(texImage, vs_out_tex0.st);
 }

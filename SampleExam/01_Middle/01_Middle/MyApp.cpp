@@ -355,7 +355,7 @@ void CMyApp::DrawCircle(const glm::mat4 &trans)
 		m_program.SetUniform("worldIT", matWorldIT);
 		m_program.SetUniform("MVP", mvp);
 		m_program.SetUniform("eye_pos", m_camera.GetEye());
-		//m_program.SetUniform("Kd", glm::vec4(0, 0, 0, 1));
+		//m_program.SetUniform("Kd", glm::vec4(1, 0, 0, 1));
 
 		m_program.SetTexture("texImage", 0, GenTexture());
 
@@ -393,7 +393,7 @@ void CMyApp::Render()
 	// ===== Real code for sample test 
 	glm::mat4 matWorld, matWorldIT, mvp;
 
-	// Set Uniform light
+	// Set Uniform specular light
 	m_program.On();
 		m_program.SetUniform("Ls", ls);
 	m_program.Off();
@@ -430,7 +430,7 @@ void CMyApp::Render()
 		m_program.SetUniform( "eye_pos", m_camera.GetEye() );
 		//m_program.SetUniform("Kd", glm::vec4(0.75f, 0.25f, 0.125f, 1));
 		double period = 2 * M_PI * SDL_GetTicks() / 5000.0;
-		m_program.SetUniform("light_pos", glm::vec3(40 * cos(period), 40 * sin(period), 0));
+		//m_program.SetUniform("light_pos", glm::vec3(40 * cos(period), 40 * sin(period), 0));
 
 		m_program.SetTexture("texImage", 0, m_textureID);
 
